@@ -25,6 +25,36 @@ create table Flights
  time timestamp
 );
 
+drop table if exists Planes;
+create table Planes
+(
+ planeID int primary key AUTO_INCREMENT,
+ numPassengers int,
+ numEcon int,
+ numBusiness int,
+ numFirst int,
+ currentFlight int references Flights(fID)
+);
+
+drop table if exists Location;
+create table Location
+(
+ locationID int primary key,
+ name varchar(30)
+);
+
+drop table if exists Reservations;
+create table Reservations
+(
+ rID int primary key AUTO_INCREMENT,
+ planeID int references Planes(planeID),
+ uID int references Passengers(uID),
+ econPass boolean,
+ businessPass boolean,
+ firstPass boolean,
+ ticketCost float
+);
+
 # Constraints
 
 
@@ -35,3 +65,5 @@ create table Flights
 # Functional Requirements
 # Have one of each: correlated subquery, group by and having, outer join, set operation
 # 3 queries need to involve multiple relations
+
+# Reserve a flight
