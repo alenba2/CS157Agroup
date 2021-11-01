@@ -39,7 +39,7 @@ create table Planes
 drop table if exists Location;
 create table Location
 (
- locationID int primary key,
+ locationID int primary key AUTO_INCREMENT,
  name varchar(30)
 );
 
@@ -47,7 +47,7 @@ drop table if exists Reservations;
 create table Reservations
 (
  rID int primary key AUTO_INCREMENT,
- planeID int references Planes(planeID),
+ fID int references Flights(fID),
  uID int references Passengers(uID),
  econPass boolean,
  businessPass boolean,
@@ -62,8 +62,3 @@ create table Reservations
 # Triggers
 
 
-# Functional Requirements
-# Have one of each: correlated subquery, group by and having, outer join, set operation
-# 3 queries need to involve multiple relations
-
-# Reserve a flight
