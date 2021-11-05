@@ -61,4 +61,17 @@ create table Reservations
 
 # Triggers
 
+## If baggage weight is over limit, charge extra on ticket
 
+drop trigger if exists overweightBagCharge;
+delimiter //
+create trigger overweightBagCharge
+after insert on reservation
+for each row
+begin
+	if (select totalBagWeight from passenger where new.uid = passenger.uid) > 50 then
+		update reservation set ticketCost = ticketCost + 50 where rid = new.rid;
+	end if;
+end;
+//
+delimiter ;
