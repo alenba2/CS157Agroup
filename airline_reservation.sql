@@ -19,11 +19,12 @@ drop table if exists Flights;
 create table Flights
 (
  fID int primary key AUTO_INCREMENT,
- planeID int references Planes(planeID),
- startID int references Location(locationID),
- destID int references Location(locationID),
+ planeID int references Planes(planeID) on delete cascade on update cascade,
+ startID int references Location(locationID) on delete cascade on update cascade,
+ destID int references Location(locationID on delete cascade on update cascade),
  time timestamp
 );
+
 
 drop table if exists Planes;
 create table Planes
@@ -33,8 +34,9 @@ create table Planes
  numEcon int,
  numBusiness int,
  numFirst int,
- currentFlight int references Flights(fID)
+ currentFlight int references Flights(fID) on delete cascade on update cascade
 );
+
 
 drop table if exists Location;
 create table Location
@@ -47,13 +49,12 @@ drop table if exists Reservations;
 create table Reservations
 (
  rID int primary key AUTO_INCREMENT,
- fID int references Flights(fID),
- uID int references Passengers(uID),
- econPass boolean,
- businessPass boolean,
- firstPass boolean,
+ fID int references Flights(fID) on delete cascade on update cascade,
+ uID int references Passengers(uID) on delete cascade on update cascade,
+ ticketType int,
  ticketCost float
 );
+
 
 # Triggers
 
