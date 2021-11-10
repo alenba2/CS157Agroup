@@ -19,12 +19,11 @@ drop table if exists Flights;
 create table Flights
 (
  fID int primary key AUTO_INCREMENT,
- planeID int references Planes(planeID) on delete cascade on update cascade,
- startID int references Location(locationID) on delete cascade on update cascade,
- destID int references Location(locationID on delete cascade on update cascade),
+ planeID int references Planes(planeID),
+ startID int references Location(locationID),
+ destID int references Location(locationID),
  time timestamp
 );
-
 
 drop table if exists Planes;
 create table Planes
@@ -34,9 +33,8 @@ create table Planes
  numEcon int,
  numBusiness int,
  numFirst int,
- currentFlight int references Flights(fID) on delete cascade on update cascade
+ currentFlight int references Flights(fID)
 );
-
 
 drop table if exists Location;
 create table Location
@@ -49,12 +47,11 @@ drop table if exists Reservations;
 create table Reservations
 (
  rID int primary key AUTO_INCREMENT,
- fID int references Flights(fID) on delete cascade on update cascade,
- uID int references Passengers(uID) on delete cascade on update cascade,
+ fID int references Flights(fID),
+ uID int references Passenger(uID),
  ticketType int,
  ticketCost float
 );
-
 
 # Triggers
 
@@ -63,11 +60,11 @@ create table Reservations
 drop trigger if exists overweightBagCharge;
 delimiter //
 create trigger overweightBagCharge
-after insert on reservation
+after insert on reservations
 for each row
 begin
     if (select totalBagWeight from passenger where new.uid = passenger.uid) > 50 then
-        update reservation set ticketCost = ticketCost + 50 where rid = new.rid;
+        update reservations set ticketCost = ticketCost + 50 where rid = new.rid;
     end if;
 end;
 //
@@ -82,7 +79,7 @@ after update on reservations
 for each row
 begin
     if new.ticketType > old.ticketType then
-    update reservation set ticketCost = ticketCost - (new.ticketType - old.ticketType) * 100  where rid = old.rid;
+    update reservations set ticketCost = ticketCost - (new.ticketType - old.ticketType) * 100  where rid = old.rid;
     end if;
 end;
 //
@@ -98,23 +95,23 @@ for each row
 begin
     if new.ticketType = 2 and (select count(*) from reservations where fid = new.fid and ticketType = 2) = (select numEcon from planes natural join flights where fid = new.fid) then
 		if (select count(*) from reservations where fid = new.fid and ticketType = 1) < (select numBusiness from planes natural join flights where fid = new.fid) then
-			update reservation set ticketType = 1 where rid = old.rid;
+			update reservations set ticketType = 1 where rid = new.rid;
 		else
-			update reservation set ticketType = 0 where rid = old.rid;
+			update reservations set ticketType = 0 where rid = new.rid;
 		end if;
     end if;
     if new.ticketType = 1 and (select count(*) from reservations where fid = new.fid and ticketType = 1) = (select numBusiness from planes natural join flights where fid = new.fid) then
 		if (select count(*) from reservations where fid = new.fid and ticketType = 0) < (select numFirst from planes natural join flights where fid = new.fid) then
-			update reservation set ticketType = 0 where rid = old.rid;
+			update reservations set ticketType = 0 where rid = new.rid;
 		else
-			update reservation set ticketType = 2 where rid = old.rid;
+			update reservations set ticketType = 2 where rid = new.rid;
 		end if;
     end if;
     if new.ticketType = 0 and (select count(*) from reservations where fid = new.fid and ticketType = 0) = (select numFirst from planes natural join flights where fid = new.fid) then
 		if (select count(*) from reservations where fid = new.fid and ticketType = 1) < (select numBusiness from planes natural join flights where fid = new.fid) then
-			update reservation set ticketType = 1 where rid = old.rid;
+			update reservations set ticketType = 1 where rid = new.rid;
 		else
-			update reservation set ticketType = 2 where rid = old.rid;
+			update reservations set ticketType = 2 where rid = new.rid;
 		end if;
     end if;
 end;
