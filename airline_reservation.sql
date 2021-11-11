@@ -127,16 +127,17 @@ end;
 //
 delimiter ;
 
-delimiter //
+DELIMITER //
 
 drop procedure if exists movetoArchive;
 
-CREATE PROCEDURE movetoArchive (IN target VARCHAR(50), out result ) 
-BEGIN
-	SELECT * FROM Reservations WHERE date(updatedAt) < target; 
-END;
+CREATE PROCEDURE movetoArchive() 
 
-delimiter;
+BEGIN
+	SELECT * FROM Reservations WHERE date(updatedAt) < '2000-01-01'; 
+END//
+
+DELIMITER ;
 
 insert into Passenger values ('1', 'Allen', 2, 34);
 #insert into Passenger values ('2', 'Stephanie', 3, 34);
