@@ -36,7 +36,7 @@ create table Planes
  numEcon int,
  numBusiness int,
  numFirst int,
- currentFlight int references Flights(fID) on delete cascade on update cascade,
+ currentFlight int unique key references Flights(fID) on delete cascade on update cascade,
  CONSTRAINT CHECK (numPassengers < 150),
  CONSTRAINT CHECK (numEcon < 50),
  CONSTRAINT CHECK (numBusiness < 50),
@@ -55,10 +55,11 @@ drop table if exists Reservations;
 create table Reservations
 (
  rID int primary key AUTO_INCREMENT,
- fID int references Flights(fID) on delete cascade on update cascade,
+ fID int key references Flights(fID) on delete cascade on update cascade,
  uID int references Passenger(uID) on delete cascade on update cascade,
  ticketType int,
- ticketCost float
+ ticketCost float,
+ CONSTRAINT fID unique (fID, uID)
 );
 
 # Triggers
@@ -147,4 +148,6 @@ insert into Planes values ('1', 75, 25, 25, 25, 1);
 insert into Planes values ('5', 100, 40, 20, 40, 2);
 insert into Flights values ('1', '1', 1, 2, '00:00:00');
 #insert into Flights values ('1', '1', 1, 1, '00:00:00');
-
+insert into Reservations values ('1', '1', '1', 1, 50);
+insert into Reservations values ('2', '1', '2', 1, 50);
+#insert into Reservations values ('3', '1', '1', 1, 50);
