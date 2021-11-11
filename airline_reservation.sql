@@ -12,7 +12,9 @@ create table Passenger
  uID int primary key AUTO_INCREMENT,
  name varchar(30),
  numBags int,
- totalBagWeight float
+ totalBagWeight float,
+ CONSTRAINT CHECK (numBags < 3),
+ CONSTRAINT CHECK (totalBagWeight < 100)
 );
 
 drop table if exists Flights;
@@ -22,7 +24,8 @@ create table Flights
  planeID int references Planes(planeID) on delete cascade on update cascade,
  startID int references Location(locationID) on delete cascade on update cascade,
  destID int references Location(locationID) on delete cascade on update cascade,
- time timestamp
+ time timestamp,
+ CONSTRAINT CHECK (destID <> startID)
 );
 
 drop table if exists Planes;
@@ -33,7 +36,12 @@ create table Planes
  numEcon int,
  numBusiness int,
  numFirst int,
- currentFlight int references Flights(fID) on delete cascade on update cascade
+ currentFlight int references Flights(fID) on delete cascade on update cascade,
+ CONSTRAINT CHECK (numPassengers < 150),
+ CONSTRAINT CHECK (numEcon < 50),
+ CONSTRAINT CHECK (numBusiness < 50),
+ CONSTRAINT CHECK (numFirst < 50),
+ CONSTRAINT CHECK ((numFirst+numBusiness+numEcon)=numPassengers)
 );
 
 drop table if exists Location;
@@ -128,4 +136,15 @@ BEGIN
 END;
 
 delimiter;
+
+insert into Passenger values ('1', 'Allen', 2, 34);
+#insert into Passenger values ('2', 'Stephanie', 3, 34);
+#insert into Passenger values ('3', 'Max', 2, 200);
+insert into Planes values ('1', 75, 25, 25, 25, 1);
+#insert into Planes values ('2', 200, 25, 25, 25, 1);
+#insert into Planes values ('3', 100, 60, 20, 20, 1);
+#insert into Planes values ('4', 100, 40, 20, 40, 1);
+insert into Planes values ('5', 100, 40, 20, 40, 2);
+insert into Flights values ('1', '1', 1, 2, '00:00:00');
+#insert into Flights values ('1', '1', 1, 1, '00:00:00');
 
