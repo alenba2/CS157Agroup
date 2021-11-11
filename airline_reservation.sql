@@ -117,3 +117,15 @@ begin
 end;
 //
 delimiter ;
+
+delimiter //
+
+drop procedure if exists movetoArchive;
+
+CREATE PROCEDURE movetoArchive (IN target VARCHAR(50), out result ) 
+BEGIN
+	SELECT * FROM Reservations WHERE date(updatedAt) < target; 
+END;
+
+delimiter;
+
