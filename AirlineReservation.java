@@ -179,4 +179,52 @@ public class AirlineReservation {
 	{
 		System.out.println(x);
 	}
+
+	//	From example
+	private static void createProc() throws SQLException
+	{
+		//connect to db
+		System.out.println("Connecting to database...");
+		conn = DriverManager.getConnection(DB_URL+"airline?serverTimezone=UTC", USER, PASS);
+		statement = conn.createStatement();
+
+		String queryDrop = "DROP PROCEDURE IF EXISTS movetoArchive";
+		Statement stmtDrop = conn.createStatement();
+		stmtDrop.execute(queryDrop);
+
+		String createInParameterProcedure = "CREATE PROCEDURE movetoArchive(IN date VARCHAR(50)) "
+				+ "BEGIN SELECT * FROM Reservations WHERE date(updatedAt) < date; END";
+		statement.executeUpdate(createInParameterProcedure);
+
+		System.out.println("Procedure has been made");
+
+
+	}
+
+
+	private static void callProc() throws SQLException
+	{
+		System.out.println("\nCalling the procedure movetoArchive");
+		CallableStatement cs = conn.prepareCall("{CALL movetoArchive(?)}");
+		cs.setString(1,"2000-01-01");
+		ResultSet rs = cs.executeQuery();
+		printResultSet(rs);
+
+	}
+
+	private static void printResultSet(ResultSet rs) throws SQLException
+	{
+		while(rs.next())
+		{
+			int rid = rs.getInt("rID");
+			int fid = rs.getInt("fID");
+			int uid = rs.getInt("uID");
+			int ticketType = rs.getInt("ticketType");
+			float ticketCost = rs.getFloat("ticketCost");
+			String update = rs.getString("updatedAt");
+
+
+			System.out.println("rID: " + rid + " fID: " + fid + " uID: " + uid + " ticketType: " + ticketType + " ticketCost: " + ticketCost + " updatedAt: " + update + "\n");
+		}
+	}
 }
