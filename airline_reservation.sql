@@ -55,7 +55,7 @@ drop table if exists Reservations;
 create table Reservations
 (
  rID int primary key AUTO_INCREMENT,
- fID int key references Flights(fID) on delete cascade on update cascade,
+ fID int references Flights(fID) on delete cascade on update cascade,
  uID int references Passenger(uID) on delete cascade on update cascade,
  ticketType int,
  ticketCost float,
