@@ -84,11 +84,11 @@ delimiter ;
 drop trigger if exists ticketChange;
 delimiter //
 create trigger ticketChange
-after update on reservations
+before update on reservations
 for each row
 begin
     if new.ticketType > old.ticketType then
-    update reservations set ticketCost = ticketCost - (new.ticketType - old.ticketType) * 100  where rid = old.rid;
+    set new.ticketCost := old.ticketCost - (new.ticketType - old.ticketType) * 100;
     end if;
 end;
 //
