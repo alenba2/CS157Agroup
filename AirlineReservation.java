@@ -64,7 +64,8 @@ public class AirlineReservation {
 			//removePassenger(2);
 			//reserveFlight(2, 1, 2, 2, 150);
 			//addFlight(2, 5, 1, 2, "0000-00-00 00:00:00");
-			eitherFlight(1, 2);
+			//eitherFlight(1, 2);
+			countPass(1);
 		}
 		catch (SQLException x)
 		{
@@ -652,6 +653,41 @@ public class AirlineReservation {
 		while (rs.next())
 		{
 			sop(rs.getString("uID"));
+		}
+
+		sop("");
+	}
+	
+	/**
+	 * Count the number of passengers booked for a flight
+	 * @param fid
+	 * @throws SQLException
+	 */
+	private static void countPass(int fid) throws SQLException 
+	{
+		sop("Processing request to list all passengers booked on flight " + fid);
+		String numPass = "select count(*) as count from reservations where fid=?";
+		
+		Statement s = conn.createStatement();
+		
+		ResultSet rs = s.executeQuery("select * from reservations");
+		sop("Current list of reservations:");
+		sop("rid\tfid\tuid\tticketType\tticketCost");
+		while (rs.next())
+		{
+			sop(rs.getString("rID") + "\t" + rs.getString("fID") + "\t" + rs.getString("uID") 
+			+ "\t" + rs.getString("ticketType") + "\t" + rs.getString("ticketCost"));
+		}
+		
+		PreparedStatement ps = conn.prepareStatement(numPass);
+		ps.setInt(1, fid);
+		rs = ps.executeQuery();
+		sop("Request has been submitted" + "\n");
+
+		sop("Number of passengers on flight " + fid);
+		while (rs.next())
+		{
+			sop(rs.getString("count"));
 		}
 
 		sop("");
