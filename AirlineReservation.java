@@ -69,7 +69,8 @@ public class AirlineReservation {
 		}
 		catch (SQLException x)
 		{
-			x.getMessage();
+			sop("\n" + "Error Code: " + x.getErrorCode());
+			sop("Message: " + x.getMessage());
 		}
 	}
 
