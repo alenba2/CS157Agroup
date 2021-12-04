@@ -693,7 +693,24 @@ public class AirlineReservation {
 
 		sop("");
 	}
-	
+
+	/**
+	 * Call Procedure: Inserts old Reservation data to Archive
+	 * @param date
+	 * @throws SQLException
+	 */
+	private static void callProc() throws SQLException
+	{
+		System.out.println("\nCalling the procedure movetoArchive");
+
+		CallableStatement cs = conn.prepareCall("{CALL movetoArchive(?)}");
+		cs.setString(1,"2000-01-01"); // Date based on
+		ResultSet rs = cs.executeQuery();
+
+		System.out.println("\nCopied Attributes to Archive...\n");
+
+	}
+
 	private static void sop(Object x)
 	{
 		System.out.println(x);
