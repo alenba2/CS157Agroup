@@ -59,7 +59,20 @@ create table Reservations
  uID int references Passenger(uID) on delete cascade on update cascade,
  ticketType int,
  ticketCost float,
- CONSTRAINT fID unique (fID, uID)
+ CONSTRAINT fID unique (fID, uID),
+ updatedAt timestamp
+);
+
+drop table if exists Archive;
+create table Archive
+(
+ rID int,
+ fID int references Flights(fID),
+ uID int references Passenger(uID),
+ ticketType int,
+ ticketCost float,
+ CONSTRAINT fID unique (fID, uID),
+ updatedAt timestamp
 );
 
 # Triggers
@@ -127,14 +140,16 @@ end;
 //
 delimiter ;
 
-DELIMITER //
+## Copies old data to be stored into Archive 
 
 drop procedure if exists movetoArchive;
 
-CREATE PROCEDURE movetoArchive() 
+DELIMITER //
+
+CREATE PROCEDURE movetoArchive(IN date CHAR(10)) 
 
 BEGIN
-	SELECT * FROM Reservations WHERE date(updatedAt) < '2000-01-01'; 
+    insert into Archive SELECT * FROM Reservations WHERE date(updatedAt) < date;
 END//
 
 DELIMITER ;
@@ -146,9 +161,9 @@ insert into Planes values ('1', 75, 25, 25, 25, 1);
 #insert into Planes values ('2', 200, 25, 25, 25, 1);
 #insert into Planes values ('3', 100, 60, 20, 20, 1);
 #insert into Planes values ('4', 100, 40, 20, 40, 1);
-insert into Planes values ('5', 100, 40, 20, 40, 2);
-insert into Flights values ('1', '1', 1, 2, '00:00:00');
+#insert into Planes values ('5', 100, 40, 20, 40, 2);
+#insert into Flights values ('1', '1', 1, 2, '00:00:00');
 #insert into Flights values ('1', '1', 1, 1, '00:00:00');
-insert into Reservations values ('1', '1', '1', 1, 50);
-insert into Reservations values ('2', '1', '2', 1, 50);
+insert into Reservations values ('1', '1', '1', 1, 50,'1990-01-01 10:10:10');
+insert into Reservations values ('2', '1', '2', 1, 50,'1999-01-01 10:10:10');
 #insert into Reservations values ('3', '1', '1', 1, 50);
