@@ -234,3 +234,7 @@ insert into Flights values ('3', '3', 2, 4, '1990-01-07 09:00:00');
 insert into Flights values ('4', '4', 4, 3, '1990-01-10 10:00:00');
 #insert into Flights values ('1', '1', 1, 1, '00:00:00');
 #insert into Reservations values ('3', '1', '1', 1, 50);
+insert into Location values ('1', 'San Jose');
+insert into Location values ('2', 'San Francisco');
+insert into Location values ('3', 'Los Angeles');
+insert into Location values ('4', 'Las Vegas');
