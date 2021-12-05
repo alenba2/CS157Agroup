@@ -219,12 +219,11 @@ insert into Passenger values ('18', 'Gabriel', 2, 76);
 insert into Passenger values ('19', 'Ivy', 2, 94);
 insert into Passenger values ('20', 'Nicholas', 2, 77);
 #insert into Passenger values ('2', 'Stephanie', 3, 34);
-
 #insert into Passenger values ('3', 'Max', 2, 200);
-insert into Planes values ('1', 20, 5, 5, 10, 1);
-insert into Planes values ('2', 6, 0, 4, 2, 2);
-insert into Planes values ('3', 11, 3, 5, 3, 3);
-insert into Planes values ('4', 5, 0, 2, 3, 4);
+insert into Planes values ('1', 49, 49, 49, 147, 1);
+insert into Planes values ('2', 49, 49, 49, 147, 2);
+insert into Planes values ('3', 49, 49, 49, 147, 3);
+insert into Planes values ('4', 49, 49, 49, 147, 4);
 #insert into Planes values ('2', 200, 25, 25, 25, 1);
 #insert into Planes values ('3', 100, 60, 20, 20, 1);
 #insert into Planes values ('4', 100, 40, 20, 40, 1);
