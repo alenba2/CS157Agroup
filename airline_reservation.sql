@@ -21,11 +21,14 @@ drop table if exists Flights;
 create table Flights
 (
  fID int primary key AUTO_INCREMENT,
- planeID int references Planes(planeID) on delete cascade on update cascade,
- startID int references Location(locationID) on delete cascade on update cascade,
- destID int references Location(locationID) on delete cascade on update cascade,
+ planeID int,
+ startID int,
+ destID int,
  time timestamp,
- CONSTRAINT CHECK (destID <> startID)
+ CONSTRAINT CHECK (destID <> startID),
+ FOREIGN KEY (planeID) references Planes(planeID) on delete cascade on update cascade,
+ FOREIGN KEY (startID) references Location(locationID) on delete cascade on update cascade,
+ FOREIGN KEY (destID) references Location(locationID) on delete cascade on update cascade
 );
 
 drop table if exists Planes;
@@ -36,12 +39,13 @@ create table Planes
  numEcon int,
  numBusiness int,
  numFirst int,
- currentFlight int unique key references Flights(fID) on delete cascade on update cascade,
+ currentFlight int unique key,
  CONSTRAINT CHECK (numPassengers < 150),
  CONSTRAINT CHECK (numEcon < 50),
  CONSTRAINT CHECK (numBusiness < 50),
  CONSTRAINT CHECK (numFirst < 50),
- CONSTRAINT CHECK ((numFirst+numBusiness+numEcon)=numPassengers)
+ CONSTRAINT CHECK ((numFirst+numBusiness+numEcon)=numPassengers),
+ FOREIGN KEY (currentFlight) references Flights(fID) on delete cascade on update cascade
 );
 
 drop table if exists Location;
@@ -55,24 +59,28 @@ drop table if exists Reservations;
 create table Reservations
 (
  rID int primary key AUTO_INCREMENT,
- fID int references Flights(fID) on delete cascade on update cascade,
- uID int references Passenger(uID) on delete cascade on update cascade,
+ fID int,
+ uID int,
  ticketType int,
  ticketCost float,
  #CONSTRAINT fID unique (fID, uID),
- updatedAt timestamp DEFAULT CURRENT_TIMESTAMP
+ updatedAt timestamp DEFAULT CURRENT_TIMESTAMP,
+ FOREIGN KEY (fid) references Flights(fID) on delete cascade on update cascade,
+ FOREIGN KEY (uid) references Passenger(uID) on delete cascade on update cascade
 );
 
 drop table if exists Archive;
 create table Archive
 (
  rID int,
- fID int references Flights(fID),
- uID int references Passenger(uID),
+ fID int,
+ uID int,
  ticketType int,
  ticketCost float,
  CONSTRAINT fID unique (fID, uID),
- updatedAt timestamp
+ updatedAt timestamp,
+ FOREIGN KEY (fid) references Flights(fID) on delete cascade on update cascade,
+ FOREIGN KEY (uid) references Passenger(uID) on delete cascade on update cascade
 );
 
 # Triggers
