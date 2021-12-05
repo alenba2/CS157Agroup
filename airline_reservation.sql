@@ -196,8 +196,8 @@ insert into reservations (rid, fid, uid, ticketType, ticketCost) values (39, 4, 
 insert into reservations (rid, fid, uid, ticketType, ticketCost) values (40, 4, 6, 2, 50);
 insert into reservations (rid, fid, uid, ticketType, ticketCost) values (41, 4, 8, 2, 50);
 insert into reservations (rid, fid, uid, ticketType, ticketCost) values (42, 4, 10, 2, 50);
-insert into reservations (rid, fid, uid, ticketType, ticketCost,updateAt) values (43, 4, 8, 2, 50,'1990-01-01 00:00:00');
-insert into reservations (rid, fid, uid, ticketType, ticketCost,updateAt) values (44, 4, 10, 2, 50,'1990-01-01 00:00:00');
+insert into reservations (rid, fid, uid, ticketType, ticketCost,updatedAt) values (43, 4, 8, 2, 50,'1990-01-01 00:00:00');
+insert into reservations (rid, fid, uid, ticketType, ticketCost,updatedAt) values (44, 4, 10, 2, 50,'1990-01-01 00:00:00');
 insert into Passenger values ('1', 'Allen', 2, 63);
 insert into Passenger values ('2', 'Stephanie', 1, 15);
 insert into Passenger values ('3', 'Max', 2, 72);
