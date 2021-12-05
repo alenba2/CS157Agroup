@@ -21,14 +21,11 @@ drop table if exists Flights;
 create table Flights
 (
  fID int primary key AUTO_INCREMENT,
- planeID int,
- startID int,
- destID int,
+ planeID int references Planes(planeID) on delete cascade on update cascade,
+ startID int references Location(locationID) on delete cascade on update cascade,
+ destID int references Location(locationID) on delete cascade on update cascade,
  time timestamp,
- CONSTRAINT CHECK (destID <> startID),
- FOREIGN KEY (planeID) references Planes(planeID) on delete cascade on update cascade,
- FOREIGN KEY (startID) references Location(locationID) on delete cascade on update cascade,
- FOREIGN KEY (destID) references Location(locationID) on delete cascade on update cascade
+ CONSTRAINT CHECK (destID <> startID)
 );
 
 drop table if exists Planes;
@@ -39,13 +36,12 @@ create table Planes
  numEcon int,
  numBusiness int,
  numFirst int,
- currentFlight int unique key,
+ currentFlight int unique key references Flights(fID) on delete cascade on update cascade,
  CONSTRAINT CHECK (numPassengers < 150),
  CONSTRAINT CHECK (numEcon < 50),
  CONSTRAINT CHECK (numBusiness < 50),
  CONSTRAINT CHECK (numFirst < 50),
- CONSTRAINT CHECK ((numFirst+numBusiness+numEcon)=numPassengers),
- FOREIGN KEY (currentFlight) references Flights(fID) on delete cascade on update cascade
+ CONSTRAINT CHECK ((numFirst+numBusiness+numEcon)=numPassengers)
 );
 
 drop table if exists Location;
