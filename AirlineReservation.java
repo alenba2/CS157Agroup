@@ -15,7 +15,7 @@ public class AirlineReservation {
 
 	// Database credentials
 	static final String USER = "root";
-	static final String PASS = "madinlife1";
+	static final String PASS = "[Enter Password]";
 	private static Connection conn = null;
 	private static Statement statement = null;
 
